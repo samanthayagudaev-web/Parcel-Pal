@@ -1,1 +1,244 @@
-﻿<!DOCTYPE html> <html> <head> <title>ParcelPal Prototype</title> <style> body { margin: 0; font-family: Arial; background: #0f172a; color: white; text-align: center; } .app { padding: 20px; } .card { background: #1e293b; padding: 20px; margin: 20px auto; width: 320px; border-radius: 12px; } button { margin: 10px; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; } .blue { background: #3b82f6; color: white; } .red { background: #ef4444; color: white; } .gray { background: #64748b; color: white; } #alarmScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: red; color: white; justify-content: center; align-items: center; flex-direction: column; } #alarmScreen button { background: black; color: white; } </style> </head> <body> <!-- ALARM SCREEN --> <div id="alarmScreen"> <h1> ALARM ACTIVE</h1> <p>Package removed without authorization</p> <button onclick="disarmAlarm()">DISARM ALARM</button> </div> <!-- MAIN APP --> <div class="app"> <h1> ParcelPal</h1> <div class="card"> <h2 id="status">Status: SAFE </h2> <p id="weight">Weight: 0 g</p> <p id="alarm">Alarm: OFF</p> </div> <div> <button class="blue" onclick="simulatePackage()"> Simulate Package</button> <button class="red" onclick="triggerAlarm()"> Trigger Alarm</button> <button class="gray" onclick="resetSystem()"> Reset</button> </div> <p id="log"></p> </div> <script> let armed = false; let alarm = false; let weight = 0; function updateUI() { document.getElementById("status").innerText = armed ? "Status: ARMED " : "Status: SAFE "; document.getElementById("weight").innerText = "Weight: " + weight + " g"; document.getElementById("alarm").innerText = "Alarm: " + (alarm ? "ACTIVE " : "OFF"); } function log(msg) { document.getElementById("log").innerText = msg; } // simulate package placed function simulatePackage() { weight = 3200; armed = true; alarm = false; updateUI(); log("Package detected → System ARMED"); } // trigger alarm (theft simulation) function triggerAlarm() { alarm = true; document.getElementById("alarmScreen").style.display = "flex"; updateUI(); log("ALARM TRIGGERED"); } // disarm alarm function disarmAlarm() { alarm = false; document.getElementById("alarmScreen").style.display = "none"; updateUI(); log("Alarm disarmed"); } // reset system function resetSystem() { armed = false; alarm = false; weight = 0; document.getElementById("alarmScreen").style.display = "none"; updateUI(); log("System reset"); } updateUI(); </script> </body> </html>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ParcelPal Prototype</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+
+    .app {
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      margin: 20px auto;
+      width: 320px;
+      border-radius: 12px;
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .blue {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .red {
+      background: #ef4444;
+      color: white;
+    }
+
+    .gray {
+      background: #64748b;
+      color: white;
+    }
+
+    #alarmScreen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: red;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #alarmScreen button {
+      background: black;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ALARM SCREEN -->
+  <div id="alarmScreen">
+
+    <h1>🚨 ALARM ACTIVE 🚨</h1>
+
+    <p>
+      Package removed without authorization
+    </p>
+
+    <button onclick="disarmAlarm()">
+      DISARM ALARM
+    </button>
+
+  </div>
+
+  <!-- MAIN APP -->
+  <div class="app">
+
+    <h1>📦 ParcelPal</h1>
+
+    <div class="card">
+
+      <h2 id="status">
+        Status: SAFE
+      </h2>
+
+      <p id="weight">
+        Weight: 0 g
+      </p>
+
+      <p id="alarm">
+        Alarm: OFF
+      </p>
+
+    </div>
+
+    <div>
+
+      <button class="blue" onclick="simulatePackage()">
+        Simulate Package
+      </button>
+
+      <button class="red" onclick="triggerAlarm()">
+        Trigger Alarm
+      </button>
+
+      <button class="gray" onclick="resetSystem()">
+        Reset
+      </button>
+
+    </div>
+
+    <p id="log"></p>
+
+  </div>
+
+  <script>
+
+    // ---------------- VARIABLES ----------------
+
+    let armed = false;
+    let alarm = false;
+    let weight = 0;
+
+    // YOUR REAL ESP32 IP
+    const esp32IP = "10.10.13.254";
+
+    // ---------------- UPDATE UI ----------------
+
+    function updateUI() {
+
+      document.getElementById("status").innerText =
+        armed ? "Status: ARMED" : "Status: SAFE";
+
+      document.getElementById("weight").innerText =
+        "Weight: " + weight + " g";
+
+      document.getElementById("alarm").innerText =
+        "Alarm: " + (alarm ? "ACTIVE" : "OFF");
+    }
+
+    // ---------------- LOG ----------------
+
+    function log(msg) {
+
+      document.getElementById("log").innerText = msg;
+    }
+
+    // ---------------- SIMULATE PACKAGE ----------------
+
+    function simulatePackage() {
+
+      weight = 3200;
+
+      armed = true;
+
+      alarm = false;
+
+      updateUI();
+
+      log("📦 Package detected → System ARMED");
+    }
+
+    // ---------------- TRIGGER ALARM ----------------
+
+    function triggerAlarm() {
+
+      alarm = true;
+
+      document.getElementById("alarmScreen").style.display = "flex";
+
+      updateUI();
+
+      log("🚨 ALARM TRIGGERED");
+    }
+
+    // ---------------- DISARM REAL ESP32 ----------------
+
+    function disarmAlarm() {
+
+      // send OFF command to ESP32
+      fetch("http://" + esp32IP + "/OFF")
+      .then(response => {
+
+        console.log("ESP32 Connected");
+
+      })
+      .catch(error => {
+
+        console.log("ESP32 Connection Failed");
+
+      });
+
+      alarm = false;
+
+      armed = false;
+
+      document.getElementById("alarmScreen").style.display = "none";
+
+      updateUI();
+
+      log("✅ Alarm Disarmed From Website");
+    }
+
+    // ---------------- RESET SYSTEM ----------------
+
+    function resetSystem() {
+
+      armed = false;
+
+      alarm = false;
+
+      weight = 0;
+
+      document.getElementById("alarmScreen").style.display = "none";
+
+      updateUI();
+
+      log("🔄 System Reset");
+    }
+
+    // ---------------- START UI ----------------
+
+    updateUI();
+
+  </script>
+
+</body>
+
+</html>  
